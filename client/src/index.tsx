@@ -1,27 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Button,Navbar,Nav,NavItem,DropdownButton, MenuItem,FormControl,Panel } from 'react-bootstrap';
-import { Link, Router, Route, browserHistory } from 'react-router';
+import { Button,DropdownButton, MenuItem,FormControl,Panel } from 'react-bootstrap';
+import { Link, Router, Route, hashHistory, Redirect } from 'react-router';
+import { NavigationBar } from "./components/NavigationBar"
 
 
+ const DisplayItem = (item:Item) => {return <Panel header={item.Name}>{item.Name}, נמצא ב{item.Location}</Panel>}
 
-const MyNav = ()=>(<Navbar>
-    <Navbar.Header>
-      <Navbar.Brand>Lost&Found</Navbar.Brand>
-    </Navbar.Header>
-    <Nav>
-      <NavItem eventKey={1} href="#">חפש</NavItem>
-      <NavItem eventKey={2} href="#">פריט חדש</NavItem>
-    </Nav>
-  </Navbar>)
-
- class Item {
-	 Name:string;
-	 Location:string;
- }
- 
- const DisplayItem = (item:Item) => {return <Panel header={item.Name}>{item.Name}, נמצא ב {item.Location}</Panel>}
-  
  interface SearchState {searchText:string, results:Item[] }
  class Search extends React.Component<undefined, SearchState> {
 	 constructor(props) {
@@ -30,12 +15,12 @@ const MyNav = ()=>(<Navbar>
 		searchText: '',
 		results:[]
 	  };
-	} 
-	  
+	}
+
 	handleChange(e) {
 		this.setState({ searchText: e.target.value, results: [{Name:"תיק",Location:"יריחו"},{Name:"טלפון",Location:"ירושלים"}] });
 	}
-	
+
     render() {
         return <div>
 			<FormControl
@@ -48,7 +33,7 @@ const MyNav = ()=>(<Navbar>
 			<DropdownButton title={"ביום האחרון"} id={"זמן חיפוש"}>
 				<MenuItem eventKey="1">לפני שבוע</MenuItem>
 				<MenuItem eventKey="2">לפני שנה</MenuItem>
-			</DropdownButton>  
+			</DropdownButton>
 			<DropdownButton title={"כל הארץ"} id={"איזור חיפוש"}>
 				<MenuItem eventKey="1">לוד</MenuItem>
 				<MenuItem eventKey="2">ירוחם</MenuItem>
@@ -58,14 +43,32 @@ const MyNav = ()=>(<Navbar>
 		</div>
     }
 }
-  
-  const App = ()=> (<div style={{direction:"rtl"}}>
-        <MyNav/>
-		<Search/>
+
+ class NavbarHolder extends React.Component<any, any> {
+	 constructor(props) { super(props);	}
+
+    render() {
+        return <div>
+		          <NavigationBar/>
+				{this.props.children}
+		</div>
+    }
+}
+
+const Other = ()=>(<span>NewItem</span>)
+
+
+  const Routing = ()=> (<div style={{direction:"rtl"}}>
+		    <Router history={hashHistory} >
+				<Route path="/" component={NavbarHolder}>
+					<Route path="/Search" component={Search}/>
+					<Route path="/Other" component={Other}/>
+				</Route>
+			</Router>,
       </div>)
 
 
 ReactDOM.render(
-  <App />,
+  <Routing />,
   document.getElementById('example')
 );
