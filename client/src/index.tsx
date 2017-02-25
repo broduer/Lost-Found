@@ -102,7 +102,7 @@ var FakeItems = [
 const Other = ()=>(<span>NewItem</span>)
 
 
-  const Routing = ()=> (<div style={{direction:"rtl"}}>
+const Routing = ()=> (<div style={{direction:"rtl"}}>
 		    <Router history={hashHistory} >
 				<Route path="/" component={NavbarHolder}>
 					<Route path="/Search" component={Search}/>
