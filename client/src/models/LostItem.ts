@@ -1,5 +1,4 @@
-
- export class Item {
+ export class LostItem {
 	 Name:string;
 	 Location:string;
 	 Description:string;
@@ -7,4 +6,4 @@
 	 ContactPhoneNumber:string;
 	 
 	 constructor(){}
- }
+}
